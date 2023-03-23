@@ -20,6 +20,7 @@ import {
   TabbarItem,
   Grid,
   GridItem,
+  Search,
   Image as VanImage
 } from 'vant'
  Vue.use(Cell)
@@ -39,4 +40,6 @@ Vue.use(Tabbar)
 Vue.use(TabbarItem)
 Vue.use(Grid)
 Vue.use(GridItem)
+Vue.use(VanImage)
+Vue.use(Search)
  

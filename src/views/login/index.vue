@@ -1,7 +1,7 @@
 <template>
   <div class="loginContainer">
     <!-- 导航栏 -->
-    <van-nav-bar title="标题"/>
+    <van-nav-bar title="标题" style="background-color: #1989fa;"/>
     <!-- 登录表单 -->
     <van-form @submit="onSubmit">
     <van-field 
@@ -16,18 +16,20 @@
     <van-field 
       v-model="user.code" 
       left-icon="bag-o" 
+      style="padding-left: 20px;" 
       type="password" 
       name="密码" 
       :rules="userFormRules.code"
       maxlength="6"
       placeholder="请输入验证码" >
-    <slot>
-     
-    </slot>
+    <template #button>
+      <van-button size="small" type="default" style="background-color:#828383" @click="codeSend">发送验证码</van-button>
+    </template>
+    <!-- 关于倒计时组件的使用 -->
     </van-field>
   <div style="margin: 16px;">
     <!-- 提交按钮 -->
-    <van-button type="info" native-type="onSubmit">登录</van-button>
+    <van-button block type="info" native-type="submit" style="border-radius: 5px;">登录</van-button>
   </div>
   </van-form>
 </div>
@@ -35,7 +37,7 @@
 
 <script>
 // 引入api接口，将login解构出来
-import {login }from '@/api/user'
+import { login } from '@/api/user'
 export default {
   name: 'LoginPage',
   components: {},
@@ -60,55 +62,36 @@ export default {
   watch: {},
   created () {},
   mounted () {},
-  methods: {
-    async onSubmit(values) { // 提交函数
+  methods: { 
+  // 1、完善表单提交函数
+  // 声明用户，用try...catch捕获错误，声明结果的时候调取接口，状态码为400的时候登陆失败
+  // 添加toast作为交互提示
+    async onSubmit() {
       const user = this.user
       try {
         const res = await login(user)
-        console.log('login success');
-      } catch {
+        console.log('succes',res);
+      } catch (err) {
         if (err.response.status === 400) {
-          console.log('login fail', err);
+          console.log(err);
         }
       }
-    console.log('submit', values)
     },
-
-    // 登录函数
-    async onLogin() {
-      // 开始转圈圈
-    this.$toast.loading({
-      duration: 0, // 持续时间，0表示持续展示不停止
-      forbidClick: true, // 是否禁止背景点击
-      message: '登录中...' // 提示消息
-    })
-
-    // 2、请求登录
-    try {
-      const res = await request({
-        method: 'POST',
-        url: '/app/v1_0/authorizations',
-        data: this.user
-      })
-      console.log('登录成功', res)
-      // 提示 success 或者 fail 的时候，会先把其它的 toast 先清除
-      this.$toast.success('登录成功')
-    } catch (err) {
-      console.log('登录失败', err)
-      this.$toast.fail('登录失败，手机号或验证码错误')
-    }
-    }
+  async codeSend(){}
   }
 }
 
 </script>
 
-<style>
+<style scoped>
 .loginContainer{
   padding-top: 20px;
 }
 .van-nav-bar__content{
-  background-color: pink;
+  background-color: #3296fa;
   height: 4rem;
+  font-size: 2rem;
+  color: #fff;
+
 }
 </style>

@@ -7,40 +7,37 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'login',
-    component:login
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login')
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('@/views/home')
-  },
-  {
-    path: '/layout',
+    path: '/',
     name: 'layout',
-    component: () => import('@/views/layout')
+    component: () => import('@/views/layout'),
+    children: [
+      {
+        path: '', // 默认子路由
+        name: 'home',
+        component: () => import('@/views/home') // 首页
+      },
+      {
+        path: 'my',
+        name: 'my',
+        component: () => import('@/views/my') // 我的
+      },
+      {
+        path: 'video',
+        name: 'video',
+        component: () => import('@/views/video') // 视频
+      },
+      {
+        path: 'question',
+        name: 'question',
+        component: () => import('@/views/question')  // 问答
+      }
+    ]
   },
-  {
-    path: '/my',
-    name: 'my',
-    component: () => import('@/views/my')
-  },
-  {
-    path: '/video',
-    name: 'video',
-    component: () => import('@/views/video')
-  },
-  {
-    path: '/question',
-    name: 'question',
-    component: () => import('@/views/question')
-  }
 ]
 
 const router = new VueRouter({
